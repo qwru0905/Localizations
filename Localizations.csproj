@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net4.8</TargetFramework>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <!-- 게임이 설치된 Managed 폴더 경로. 본인 환경에 맞게 Localizations.csproj.user 파일에서 재정의하세요. -->
+    <AdofaiManagedDir Condition="'$(AdofaiManagedDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed</AdofaiManagedDir>
+  </PropertyGroup>
+
+  <!-- 빌드 후 게임의 Mods\Localizations 폴더로 DLL을 자동 복사합니다. AdofaiModsDir을 csproj.user에서 지정하지 않으면 AdofaiManagedDir 기준으로 자동 추정합니다. -->
+  <Target Name="DeployToMods" AfterTargets="Build">
+    <PropertyGroup>
+      <_ModsDir Condition="'$(AdofaiModsDir)' != ''">$(AdofaiModsDir)</_ModsDir>
+      <_ModsDir Condition="'$(_ModsDir)' == ''">$(AdofaiManagedDir)\..\..\Mods</_ModsDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(_ModsDir)\Localizations" Condition="Exists('$(_ModsDir)') and !Exists('$(_ModsDir)\Localizations')" />
+    <Copy SourceFiles="Info.json" DestinationFolder="$(_ModsDir)\Localizations" Condition="Exists('$(_ModsDir)') and !Exists('$(_ModsDir)\Localizations\Info.json')" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(_ModsDir)\Localizations" Condition="Exists('$(_ModsDir)')" />
+  </Target>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(AdofaiManagedDir)\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>$(AdofaiManagedDir)\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>$(AdofaiManagedDir)\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>$(AdofaiManagedDir)\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(AdofaiManagedDir)\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(AdofaiManagedDir)\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityModManager">
+      <HintPath>$(AdofaiManagedDir)\UnityModManager\UnityModManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

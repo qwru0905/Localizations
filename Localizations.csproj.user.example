@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- 본인의 ADOFAI 설치 경로에 맞게 수정한 뒤, 이 파일을 Localizations.csproj.user 로 복사하세요. -->
+    <!-- Update this to your own ADOFAI install path, then copy this file to Localizations.csproj.user -->
+    <AdofaiManagedDir>C:\Program Files (x86)\Steam\steamapps\common\A Dance of Fire and Ice\A Dance of Fire and Ice_Data\Managed</AdofaiManagedDir>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,8 @@
+{
+  "Id": "Localizations",
+  "DisplayName": "Localizations",
+  "Author": "tjwogud",
+  "Version": "1.0.2",
+  "AssemblyName": "Localizations.dll",
+  "EntryMethod": "Localizations.Main.Setup"
+}

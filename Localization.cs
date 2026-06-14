@@ -12,7 +12,7 @@ using UnityModManagerNet;
 
 namespace Localizations
 {
-    public class Localization : MonoBehaviour
+    public class Localization
     {
         private const string SPREADSHEET_URL_START = "https://docs.google.com/spreadsheets/d/";
         private const string SPREADSHEET_URL_END = "/gviz/tq?tqx=out:json&tq&gid=";
@@ -39,7 +39,27 @@ namespace Localizations
             this.path = path;
             if (log)
                 logger.Invoke("Loading Localization...");
+            TryLoadFromFileSync();
             StaticCoroutine.Do(Download(onLoad));
+        }
+
+        // 패널 생성 시점(에디터 진입)에는 비동기 다운로드가 끝나지 않아 RDString.Get으로 굽는 라벨 텍스트가
+        // 빈 문자열로 고정되는 문제가 있어, 캐시 파일이 있으면 동기적으로 먼저 불러와 Loaded를 즉시 true로 만든다.
+        private void TryLoadFromFileSync()
+        {
+            if (!File.Exists(path))
+                return;
+            try
+            {
+                using (FileStream fileStream = File.OpenRead(path))
+                {
+                    localizations = new XmlSerializer(type).Deserialize(fileStream) as SerializableDictionary<string, SerializableDictionary<SystemLanguage, string>>;
+                    Loaded = true;
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         public delegate (string, SerializableDictionary<SystemLanguage, string>) OnLoad((string, SerializableDictionary<SystemLanguage, string>) keyValue);
